@@ -23,14 +23,16 @@ const Adduser = () => {
     isEmployee: data?.isEmployee ? data?.isEmployee : false,
   });
 
+  const [isVerify, setVerify] = useState(data?.isVerify ? data?.isVerify : false);
   const [isHR, setHr] = useState(data?.isHR ? data?.isHR : false)
   const [isEmployee, setEmployerr] = useState(data?.isEmployee ? data?.isEmployee : false)
   const [isManager, setManager] = useState(data?.isManager ? data?.isManager : false)
+  console.log(isHR, isEmployee, isManager)
   const onInputChange = (e) => {
+    console.log(e.target.value)
     setFormdata({ ...formdata, [e.target.name]: e.target.value });
   };
   const [img, setImg] = useState();
-  const [isVerify, setVerify] = useState(false);
 
   const postUser = async (e) => {
     e.preventDefault();
@@ -52,7 +54,18 @@ const Adduser = () => {
         //   toast.warning("Password not match")
         // } else {
 
-        var res = await axios.post("/api/register", formdata);
+        var res = await axios.post("/api/register", {
+          username: formdata.username,
+          firstName: formdata.firstName,
+          lastName: formdata.lastName,
+          email: formdata.email,
+          password: formdata.password,
+          isHR: isHR,
+          isManager: isManager,
+          isEmployee: isEmployee,
+          isVerify: isVerify,
+          profile_pic: img
+        });
         toast.success("post")
         console.log(res);
       }
@@ -127,44 +140,80 @@ const Adduser = () => {
                 </div>
               </div>
               <div className="row my-3">
-                {/* {
-                  data && */}
-                  <div className='col-md-6 align-items-center'>
-                    <small>User Role</small>
-                    <div className="d-flex">
-                      <div class="form-check me-2">
-                        <input onChange={e => {
-                          setHr(e.target.value)
-                          setManager(false)
-                          setEmployerr(false)
-                        }} value={true} defaultChecked={formdata.isHR ? true : false} class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
-                        <label class="form-check-label" for="flexRadioDefault1">
-                          HR
-                        </label>
-                      </div>
-                      <div class="form-check me-2">
-                        <input onChange={e => {
-                          setEmployerr(e.target.value)
-                          setHr(false)
-                          setManager(false)
-                        }} value={true} defaultChecked={formdata.isEmployee ? true : false} class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
-                        <label class="form-check-label" for="flexRadioDefault1">
-                          Employee
-                        </label>
-                      </div>
-                      <div class="form-check me-2">
-                        <input onChange={e => {
-                          setManager(e.target.value)
-                          setHr(false)
-                          setEmployerr(false)
-                        }} value={true} defaultChecked={formdata.isManager ? true : false} class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
-                        <label class="form-check-label" for="flexRadioDefault1">
-                          Manager
-                        </label>
+                {
+                  data ?
+                    <div className='col-md-6 align-items-center'>
+                      <small>User Role</small>
+                      <div className="d-flex">
+                        <div class="form-check me-2">
+                          <input onChange={e => {
+                            setHr(e.target.value)
+                            setManager(false)
+                            setEmployerr(false)
+                          }} value={true} defaultChecked={formdata.isHR ? true : false} class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                          <label class="form-check-label" for="flexRadioDefault1">
+                            HR
+                          </label>
+                        </div>
+                        <div class="form-check me-2">
+                          <input onChange={e => {
+                            setEmployerr(e.target.value)
+                            setHr(false)
+                            setManager(false)
+                          }} value={true} defaultChecked={formdata.isEmployee ? true : false} class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                          <label class="form-check-label" for="flexRadioDefault1">
+                            Employee
+                          </label>
+                        </div>
+                        <div class="form-check me-2">
+                          <input onChange={e => {
+                            setManager(e.target.value)
+                            setHr(false)
+                            setEmployerr(false)
+                          }} value={true} defaultChecked={formdata.isManager ? true : false} class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                          <label class="form-check-label" for="flexRadioDefault1">
+                            Manager
+                          </label>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                {/* } */}
+                    :
+                    <div className='col-md-6 align-items-center'>
+                      <small>User Role</small>
+                      <div className="d-flex">
+                        <div class="form-check me-2">
+                          <input onChange={e => {
+                            setHr(e.target.value)
+                            setManager(false)
+                            setEmployerr(false)
+                          }} value={true} class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                          <label class="form-check-label" for="flexRadioDefault1">
+                            HR
+                          </label>
+                        </div>
+                        <div class="form-check me-2">
+                          <input onChange={e => {
+                            setEmployerr(e.target.value)
+                            setHr(false)
+                            setManager(false)
+                          }} value={true} class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                          <label class="form-check-label" for="flexRadioDefault1">
+                            Employee
+                          </label>
+                        </div>
+                        <div class="form-check me-2">
+                          <input onChange={e => {
+                            setManager(e.target.value)
+                            setHr(false)
+                            setEmployerr(false)
+                          }} value={true} class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                          <label class="form-check-label" for="flexRadioDefault1">
+                            Manager
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                }
                 <div className="col">
                   <p className="m-0 text-xs">Verify User</p>
                   {/* <p className={`m-0 badge ${data?.isApproved === true ? ' badge-muted-warning' : ' badge-muted-danger'} fw-light`}>
