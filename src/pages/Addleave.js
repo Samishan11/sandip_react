@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import SideNavHR from "../components/SideNavHR";
-import { enGB, id } from "date-fns/locale";
+import { enGB, id, is } from "date-fns/locale";
 import { DatePicker } from "react-nice-dates";
 import "react-nice-dates/build/style.css";
 import axios from "axios";
@@ -38,7 +38,11 @@ const Addleave = () => {
           leaveReason: formdata.leaveReason,
           leaveDate: new Date(date).toDateString(),
         });
-        toast.success("Vacancy Posted");
+       if(res.data.success){
+        toast.success(res.data.message);
+       }else{
+        toast.error(res.data.message);
+       }
         // console.log(res);
       } else {
         var res = await axios.put("/api/update-project/" + data?._id, {
@@ -46,7 +50,7 @@ const Addleave = () => {
           endAt: date.toDateString(),
         });
         console.log(res);
-        toast.success("update");
+        toast.success("Leave Update");
       }
     } catch (error) {
       console.log(error);
@@ -67,8 +71,8 @@ const Addleave = () => {
             <div className="col-8 py-4">
               <h6>
                 {!data
-                  ? "Add position for your new job"
-                  : " Update position for your new job"}
+                  ? "Request for your leave"
+                  : " Update your leave"}
               </h6>
               <div className="row">
                 <div className=" col-md-6">
@@ -83,6 +87,8 @@ const Addleave = () => {
                     <option value="paid">Paid</option>
                     <option value="unpaid">Unpaid</option>
                     <option value="normal">Normal</option>
+                    <option value="full">Full Day</option>
+                    <option value="half">Half Day</option>
                   </select>
                 </div>
                 <div className=" col-md-6">

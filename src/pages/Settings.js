@@ -6,13 +6,12 @@ import { UserContext } from '../context/userContext'
 
 const Settings = () => {
 
-    const [user, setUser] = useContext(UserContext)
-    const [loading, setLoading] = useState(true)
+    const [user, setUser] = useContext(UserContext);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        user ? setLoading(false) : setLoading(true)
+        user ? setLoading(false) : setLoading(true);
     }, [user])
-
 
     const [formData, setFormData] = useState({
         username: user?.username ? user?.username : '',
@@ -115,7 +114,17 @@ const Settings = () => {
                                                 <div>
                                                     <div>
                                                         <small className='text-s fw-lighter'>Position</small>
-                                                        <p>Manager</p>
+                                                        <p className=''>{user.isHR ? "HR" : user.isManager ? "Manager" : user.isEmployee && "Employee"}</p>
+                                                        <hr />
+                                                    </div>
+                                                    <div>
+                                                        <small className='text-s fw-lighter'>Salary</small>
+                                                        <p className='text-success'>{user?.salary?  `Rs.${user?.salary}` : 0}</p>
+                                                        <hr />
+                                                    </div>
+                                                    <div>
+                                                        <small className='text-s fw-lighter'>Leave Duration Remaning</small>
+                                                        <p className={`text-s ${user?.leaveDuration > 5 ? 'text-success' :'text-danger' } `}>{user?.leaveDuration?  `${user?.leaveDuration} Days Remaning` : 0}</p>
                                                         <hr />
                                                     </div>
                                                     <div>
@@ -153,33 +162,33 @@ const Settings = () => {
                                                     <div className='row my-3'>
                                                         <div className='col'>
                                                             <label className='text-s' htmlFor="">First Name</label>
-                                                            <input name='firstName' value={formData.firstName} onChange={e => onInputChange(e)} className='form-control rounded text-secondary' type="text" placeholder='Enter first name' />
+                                                            <input name='firstName' value={formData.firstName} onChange={e => onInputChange(e)} className='form-control rounded text-secondary' type="text" placeholder={user?.firstName} />
                                                         </div>
                                                         <div className='col'>
                                                             <label className='text-s' htmlFor="">Last Name</label>
-                                                            <input onChange={e => onInputChange(e)} value={formData.lastName} name='lastName' className='form-control rounded text-secondary' type="text" placeholder='Enter last name' />
+                                                            <input onChange={e => onInputChange(e)} value={formData.lastName} name='lastName' className='form-control rounded text-secondary' type="text" placeholder={user?.lastName} />
                                                         </div>
                                                     </div>
                                                     <div className='row my-3'>
                                                         <div className='col'>
                                                             <label className='text-s' htmlFor="">Email</label>
-                                                            <input onChange={e => onInputChange(e)} value={formData.email} name='email' className='form-control rounded text-secondary' type="text" placeholder='Enter your email' />
+                                                            <input onChange={e => onInputChange(e)} value={formData.email} name='email' className='form-control rounded text-secondary' type="text" placeholder={user?.email} />
                                                         </div>
                                                         <div className='col'>
                                                             <label className='text-s' htmlFor="">Username</label>
-                                                            <input onChange={e => onInputChange(e)} value={formData.username} name='username' className='form-control rounded text-secondary' type="text" placeholder='Enter your phone number' />
+                                                            <input onChange={e => onInputChange(e)} value={formData.username} name='username' className='form-control rounded text-secondary' type="text" placeholder={user?.username} />
                                                         </div>
                                                     </div>
                                                     <div className='row my-3'>
                                                         <div className='col'>
                                                             <div className='col'>
                                                                 <label className='text-s' htmlFor="">Phone</label>
-                                                                <input onChange={e => onInputChange(e)} value={formData.contact} name='contact' className='form-control rounded text-secondary' type="text" placeholder='Enter your phone number' />
+                                                                <input onChange={e => onInputChange(e)} value={formData.contact} name='contact' className='form-control rounded text-secondary' type="text" placeholder={user?.contact} />
                                                             </div>
                                                         </div>
                                                         <div className='col'>
                                                             <label className='text-s' htmlFor="">Address</label>
-                                                            <input onChange={e => onInputChange(e)} value={formData.address} name='address' className='form-control rounded text-secondary' type="text" placeholder='Enter your address' />
+                                                            <input onChange={e => onInputChange(e)} value={formData.address} name='address' className='form-control rounded text-secondary' type="text" placeholder={user?.address} />
                                                         </div>
                                                     </div>
                                                     <div>

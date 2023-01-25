@@ -1,11 +1,10 @@
 import axios, { spread } from 'axios'
-import { da } from 'date-fns/locale';
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
-import CircularBar from '../CircularBar';
 import SideNavHR from '../SideNavHR';
 const Applicant = () => {
+  const navigate = useNavigate();
   const [getJob, setGetJob] = useState([]);
   const [load, setLoad] = useState(false);
   useEffect(() => {
@@ -20,11 +19,20 @@ const Applicant = () => {
       const res = await axios.put('/api/update-applicant/' + id, {
         isHired: true
       });
-      toast.success("Applied Sucessfully")
+      if (res.data.success) {
+        toast.success(res.data.message)
+      } else {
+        toast.error(res.data.message)
+      }
     } catch (error) {
       toast.error("Something went wrong")
     }
   };
+
+  // 
+  function getExtension(filename) {
+    return filename.split('.').pop()
+  }
 
   // 
   const deleteApplicant = async (id) => {
@@ -144,6 +152,13 @@ const Applicant = () => {
                               <p className='m-0 badge badge-muted-warning fw-light'>{val?.applied_at}</p>
                             </div>
                             <div className='col'>
+                              <button onClick={() => {
+                                getExtension(val?.cv) === "pdf" ?
+                                  window.location = `http://localhost:5000//${val?.cv}`
+                                  :
+                                  navigate("/cv", { state: { data: val } })
+
+                              }} className="btn btn-sm rounded badge-muted-primary mx-2"><i className="fa-solid fa-print text-light"></i></button>
                               <button onClick={() => updateApplicant(val._id)} className="btn btn-sm rounded badge-muted-primary mx-2">Hired</button>
                               <button onClick={() => deleteApplicant(val?._id)} className="btn btn-sm rounded badge-muted-danger mx-2"><i className="fa-solid fa-trash text-danger"></i></button>
                             </div>
@@ -181,6 +196,13 @@ const Applicant = () => {
                             <p className='m-0 badge badge-muted-warning fw-light'>{val?.applied_at}</p>
                           </div>
                           <div className='col'>
+                            <button onClick={() => {
+                              getExtension(val?.cv) === "pdf" ?
+                                window.location = `http://localhost:5000//${val?.cv}`
+                                :
+                                navigate("/cv", { state: { data: val } })
+
+                            }} className="btn btn-sm rounded badge-muted-primary mx-2"><i className="fa-solid fa-print text-light"></i></button>
                             <button onClick={() => updateApplicant(val._id)} className="btn btn-sm rounded badge-muted-primary mx-2">Hired</button>
                             <button onClick={() => deleteApplicant(val?._id)} className="btn btn-sm rounded badge-muted-danger mx-2"><i className="fa-solid fa-trash text-danger"></i></button>
                           </div>

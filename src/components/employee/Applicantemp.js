@@ -2,9 +2,11 @@ import axios, { spread } from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify';
-import CircularBar from '../CircularBar';
+import { useNavigate } from 'react-router-dom'
+
 import SideNavHR from '../SideNavHR';
 const Applicantemp = () => {
+    const navigate = useNavigate();
     const [getJob, setGetJob] = useState([]);
     const [load, setLoad] = useState(false);
     useEffect(() => {
@@ -31,6 +33,11 @@ const Applicantemp = () => {
             toast.error("Something went wrong")
         }
     };
+
+    // 
+    function getExtension(filename) {
+        return filename.split('.').pop()
+    }
     return (
         <div className="d-flex">
             <SideNavHR tab="applicant" />
@@ -113,7 +120,14 @@ const Applicantemp = () => {
                                                         <p className='m-0 badge badge-muted-warning fw-light'>{val?.applied_at}</p>
                                                     </div>
                                                     <div className='col'>
-                                                        <button onClick={()=>deleteApplicant(val?._id)} className="btn btn-sm rounded badge-muted-danger mx-2"><i className="fa-solid fa-trash text-danger"></i></button>
+                                                        <button onClick={() => {
+                                                            getExtension(val?.cv) === "pdf" ?
+                                                                window.location = `http://localhost:5000//${val?.cv}`
+                                                                :
+                                                                navigate("/cv", { state: { data: val } })
+
+                                                        }} className="btn btn-sm rounded badge-muted-primary mx-2"><i className="fa-solid fa-print text-light"></i></button>
+                                                        <button onClick={() => deleteApplicant(val?._id)} className="btn btn-sm rounded badge-muted-danger mx-2"><i className="fa-solid fa-trash text-danger"></i></button>
                                                     </div>
                                                 </div>
                                             })

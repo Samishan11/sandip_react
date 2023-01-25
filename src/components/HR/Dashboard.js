@@ -1,15 +1,17 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState , useContext } from 'react';
 import { userAuthToken } from '../../utils/parseToken';
 import CircularBar from '../CircularBar';
 import SideNavHR from '../SideNavHR';
+import LineChart from "../LineChart";
+import { ApplicantContext } from '../../context/applicantContext';
 const Dashboard = () => {
   const [getJob, setGetJob] = useState([]);
+  const [applicant] = useContext(ApplicantContext);
   useEffect(() => {
     axios
       .get("/api/get-vacancy")
       .then((data) => {
-        console.log(data.data.data);
         setGetJob(data.data.data);
       })
       .catch((e) => {
@@ -19,7 +21,7 @@ const Dashboard = () => {
   const [getApplicant, setGetApplicant] = useState([]);
   const [filterApplicant, setfilterApplicant] = useState([]);
   useEffect(() => {
-    axios.get("/api/get-Applicant").then(data => {
+    axios.get("/api/get-applicant").then(data => {
       setGetApplicant(data.data.data)
       const filterApplicant = data.data.data?.filter(data => {
         if (data.isHired) {
@@ -43,7 +45,69 @@ const Dashboard = () => {
   }, [])
 
   // 
- 
+  const data = [
+    {
+      id: 1,
+      year: 2016,
+      userGain: 80000,
+      userLost: 823
+    },
+    {
+      id: 2,
+      year: 2017,
+      userGain: 45677,
+      userLost: 345
+    },
+    {
+      id: 3,
+      year: 2018,
+      userGain: 78888,
+      userLost: 555
+    },
+    {
+      id: 4,
+      year: 2019,
+      userGain: 90000,
+      userLost: 4555
+    },
+    {
+      id: 5,
+      year: 2020,
+      userGain: 4300,
+      userLost: 234
+    }
+  ]
+  const [chartData, setChartData] = useState(
+    {
+      labels: applicant?.map((data) => new Date(data.applied_at).getUTCDay()),
+      datasets: [
+        {
+          label: "Applicant Analysis",
+          data: applicant?.map((data , ind) => {
+            if(data.isHired){
+              return 1;
+            }else{
+              return 0
+            }
+          }),
+          
+          backgroundColor: ['green', 'red', 'blue' , 'yellow']
+        }
+      ],
+      options:{
+        plugins: {
+          title: {
+            display: true,
+            text: "Users Gained between 2016-2020"
+          },
+          legend: {
+            display: false
+          }
+        }
+      }
+    }
+  );
+
 
   // calculate hire percentage
   const [percentage, setPercentage] = useState();
@@ -65,12 +129,6 @@ const Dashboard = () => {
           <div className='container mx-auto row px-3'>
             <div className='col-md-2'>
               <div className='rounded border bg-light px-2 pt-3 shadow text-secondary my-2'>
-                <span className='d-block text-center'><i className='fa-solid fa-crosshairs'></i> Positions</span>
-                <p className='text-center fw-bold' style={{ fontSize: "3rem" }}>20</p>
-              </div>
-            </div>
-            <div className='col-md-2'>
-              <div className='rounded border bg-light px-2 pt-3 shadow text-secondary my-2'>
                 <span className='d-block text-center'><i className='fa-solid fa-users'></i> Employees</span>
                 <p className='text-center fw-bold' style={{ fontSize: "3rem" }}>{user?.length}</p>
               </div>
@@ -84,7 +142,7 @@ const Dashboard = () => {
             <div className='col-md-2'>
               <div className='rounded border bg-light px-2 pt-3 shadow text-secondary my-2'>
                 <span className='d-block text-center'><i className='fa-solid fa-user-group'></i> Applicants</span>
-                <p className='text-center fw-bold' style={{ fontSize: "3rem" }}>{getApplicant?.length}</p>
+              <p className='text-center fw-bold' style={{ fontSize: "3rem" }}>{getApplicant?.length}</p>
               </div>
             </div>
             <div className='col-md-2'>
@@ -103,6 +161,14 @@ const Dashboard = () => {
 
           <div className='container-fluid middle-section'>
             <div className='middle-content pb-5'>
+              
+              <div className='container my-4'>
+                <h6 className='m-0'>Job Applicant Analysis Chat</h6>
+              <LineChart
+                chartData={chartData}
+              />
+              </div>
+
               <div className='row px-3'>
                 <div className='col-md-8'>
                   {/* Recent Jobs */}
@@ -192,12 +258,12 @@ const Dashboard = () => {
                   <div className='border rounded'>
                     <h5 className='text-center mt-4 mb-0'>Hire Rate</h5>
                     <div className='circular-bar mx-auto'>
-                      <CircularBar value={percentage ? percentage : 0} />
+                      <CircularBar value={percentage ? Math.round(percentage) : 0} />
                     </div>
                     <div className='d-flex w-50 mx-auto mt-4'>
                       <div>
                         <p className='m-0 text-s'>Last Week</p>
-                        <h2>{percentage ? percentage - (percentage-23) : 0}%</h2>
+                        <h2>{percentage ? percentage - (percentage - 23) : 0}%</h2>
                       </div>
                       <div className='ms-auto'>
                         <p className='m-0 text-s'>Last Month</p>

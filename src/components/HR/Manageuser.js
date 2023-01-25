@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
+import Alert from '../Alert';
 import SideNavHR from '../SideNavHR';
 
 const Manageuser = () => {
@@ -14,7 +15,7 @@ const Manageuser = () => {
     }).catch(e => {
       console.log(e)
     })
-  }, [load])
+  }, [load, Alert])
   // 
   const getUserData = (i) => {
     navigate("/add-user", { state: { data: getUser[i] } })
@@ -99,6 +100,7 @@ const Manageuser = () => {
                       <button className="btn no-img-avatar-sm bg-primary text-light shadow me-3">+</button>
                     </Link>
                   </div>
+
                   {
                     search.length === 0 ?
                       getUser?.map((val, ind) => {
@@ -123,7 +125,7 @@ const Manageuser = () => {
 
                           <div className='col'>
                             <button onClick={() => getUserData(ind)} className="btn btn-sm rounded badge-muted-primary"><i className="fa-solid fa-edit text-primary"></i></button>
-                            <button className="btn btn-sm rounded badge-muted-danger mx-2"><i onClick={() => deleteApi(val._id)} className="fa-solid fa-trash text-danger"></i></button>
+                            <button className="btn btn-sm rounded badge-muted-danger mx-2"><i onClick={() => <Alert api={`delete-user/${val.id}`} />} className="fa-solid fa-trash text-danger"></i></button>
                           </div>
                         </div>
                       })

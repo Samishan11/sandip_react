@@ -228,7 +228,7 @@ const DashboardEmp = () => {
                   <div className='border rounded'>
                     <h5 className='text-center mt-4 mb-0'>Task Success Rate</h5>
                     <div className='circular-bar mx-auto'>
-                      <CircularBar value={percentage ? percentage : 0} />
+                      <CircularBar value={percentage ? Math.round(percentage) : 0} />
                     </div>
                     <div className='d-flex w-50 mx-auto mt-4'>
                       <div>

@@ -9,7 +9,6 @@ export const ProtectedRoutes = () => {
     }
     const token = localStorage.getItem('token')
     const user = parseJwt(token);
-    console.log(user)
     return (
         user?.user?._id ?
             <Outlet></Outlet>

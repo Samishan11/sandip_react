@@ -6,20 +6,20 @@ import SideNavHR from '../SideNavHR';
 
 const Leave = () => {
   const [getLeave, setGetLeave] = useState([]);
+  const [load, setLoad] = useState(false);
+
   useEffect(() => {
     axios.get("/api/get-leaves").then(data => {
-      console.log(data.data.data)
       setGetLeave(data.data.data)
     }).catch(e => {
       console.log(e)
     })
-  }, [])
+  }, [load])
 
   // 
   const [approved, setApproved] = useState();
   const leaveApprove = async (id) => {
     try {
-
       var res = await axios.put("/api/update-leave/" + id, {
         isApproved: approved
       });
@@ -27,7 +27,7 @@ const Leave = () => {
     } catch (error) {
       toast.error("Something went wrong!!!")
     }
-  }
+  };
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -42,6 +42,21 @@ const Leave = () => {
     setSearchResults(results);
   }, [searchTerm]);
 
+  // 
+  const deleteLeave = async (id) => {
+    try {
+      const res = await axios.delete('/api/delete-leave/' + id);
+      if (!load) {
+        setLoad(true)
+      } else {
+        setLoad(false)
+      }
+      toast.success("Deleted Sucessfully")
+    } catch (error) {
+      toast.error("Something went wrong")
+    }
+  };
+
   return (
     <div className="d-flex">
       <SideNavHR tab="leaves" />
@@ -55,7 +70,7 @@ const Leave = () => {
             <div className="container mx-auto row border rounded position-relative bg-light shadow-sm py-4" style={{ zIndex: "1" }}>
               <div className="col-md-4">
                 <label htmlFor="">Search</label>
-                <input onChange={e=>handleChange(e)} type="text" className="form-control form-control-sm form-control-solid" placeholder="Search..." />
+                <input onChange={e => handleChange(e)} type="text" className="form-control form-control-sm form-control-solid" placeholder="Search..." />
               </div>
               <div className="col-md-4">
                 <label htmlFor="">User Type</label>
@@ -84,112 +99,112 @@ const Leave = () => {
                     </Link>
                   </div>
                   {
-                   searchResults.length === 0 ?
-                   getLeave.length > 0 ?
-                   getLeave.map((data, ind) => {
-                     return (
-                       <div className="border rounded shadow-sm row align-items-center my-2 mx-0 py-2 job-row" >
-                         <div className="col d-flex align-items-center">
-                           <div className="mx-2">
-                             <p className="m-0 text-xs">Username</p>
-                             <p className="m-0 text-s">{data?.user?.username}</p>
-                           </div>
-                         </div>
-                         <div className="col">
-                           <p className="m-0 text-xs">Leave Type</p>
-                           <p className="m-0 text-s">{data?.leaveType}</p>
-                         </div>
-                         <div className="col">
-                           <p className="m-0 text-xs">Duration</p>
-                           <p className="m-0 text-sm fw-bold">{data?.leaveDuration}</p>
-                         </div>
-                         <div className="col">
-                           <p className="m-0 text-xs">Reason</p>
-                           <p className="m-0 text-sm fw-bold">{data?.leaveReason}</p>
-                         </div>
-                         <div className="col">
-                           <p className="m-0 text-xs">Leave Date</p>
-                           <p className="m-0 text-sm">{new Date(data?.leaveDate)?.toDateString()}</p>
-                         </div>
-                         <div className="col">
-                           <p className="m-0 text-xs">Is Approved</p>
-                           {/* <p className={`m-0 badge ${data?.isApproved === true ? ' badge-muted-warning' : ' badge-muted-danger'} fw-light`}>
+                    searchResults.length === 0 ?
+                      getLeave.length > 0 ?
+                        getLeave.map((data, ind) => {
+                          return (
+                            <div className="border rounded shadow-sm row align-items-center my-2 mx-0 py-2 job-row" >
+                              <div className="col d-flex align-items-center">
+                                <div className="mx-2">
+                                  <p className="m-0 text-xs">Username</p>
+                                  <p className="m-0 text-s">{data?.user?.username}</p>
+                                </div>
+                              </div>
+                              <div className="col">
+                                <p className="m-0 text-xs">Leave Type</p>
+                                <p className="m-0 text-s">{data?.leaveType}</p>
+                              </div>
+                              <div className="col">
+                                <p className="m-0 text-xs">Duration</p>
+                                <p className="m-0 text-sm fw-bold">{data?.leaveDuration}</p>
+                              </div>
+                              <div className="col">
+                                <p className="m-0 text-xs">Reason</p>
+                                <p className="m-0 text-sm fw-bold">{data?.leaveReason}</p>
+                              </div>
+                              <div className="col">
+                                <p className="m-0 text-xs">Leave Date</p>
+                                <p className="m-0 text-sm">{new Date(data?.leaveDate)?.toDateString()}</p>
+                              </div>
+                              <div className="col">
+                                <p className="m-0 text-xs">Is Approved</p>
+                                {/* <p className={`m-0 badge ${data?.isApproved === true ? ' badge-muted-warning' : ' badge-muted-danger'} fw-light`}>
                              {data?.isApproved ? 'Approved' : 'Not Approved'}
                            </p> */}
-                           <select onChange={e => setApproved(e.target.value)} className="form-select" aria-label="Default select example">
-                             <option value={data?.isApproved} selected>{data?.isApproved ? "Approved" : "Pending"}</option>
-                             <option value={true}>Approved</option>
-                             <option value={false}>Pending</option>
-                           </select>
-                         </div>
-                         <div className="col">
-                           <button
-                             onClick={() => leaveApprove(data?._id)}
-                             to="/add-job"
-                             className="btn btn-sm rounded badge-muted-primary"
-                           >
-                             save
-                           </button>
-                           <button className="btn btn-sm rounded badge-muted-danger mx-2">
-                             <i className="fa-solid fa-trash text-danger"></i>
-                           </button>
-                         </div>
-                       </div>
-                     )
-                   })
-                   :
-                   <>loadding...</> :
-                   searchResults.map((data, ind) => {
-                    return (
-                      <div className="border rounded shadow-sm row align-items-center my-2 mx-0 py-2 job-row" >
-                        <div className="col d-flex align-items-center">
-                          <div className="mx-2">
-                            <p className="m-0 text-xs">Username</p>
-                            <p className="m-0 text-s">{data?.user?.username}</p>
-                          </div>
-                        </div>
-                        <div className="col">
-                          <p className="m-0 text-xs">Leave Type</p>
-                          <p className="m-0 text-s">{data?.leaveType}</p>
-                        </div>
-                        <div className="col">
-                          <p className="m-0 text-xs">Duration</p>
-                          <p className="m-0 text-sm fw-bold">{data?.leaveDuration}</p>
-                        </div>
-                        <div className="col">
-                          <p className="m-0 text-xs">Reason</p>
-                          <p className="m-0 text-sm fw-bold">{data?.leaveReason}</p>
-                        </div>
-                        <div className="col">
-                          <p className="m-0 text-xs">Leave Date</p>
-                          <p className="m-0 text-sm">{new Date(data?.leaveDate)?.toDateString()}</p>
-                        </div>
-                        <div className="col">
-                          <p className="m-0 text-xs">Is Approved</p>
-                          {/* <p className={`m-0 badge ${data?.isApproved === true ? ' badge-muted-warning' : ' badge-muted-danger'} fw-light`}>
+                                <select onChange={e => setApproved(e.target.value)} className="form-select" aria-label="Default select example">
+                                  <option value={data?.isApproved} selected>{data?.isApproved ? "Approved" : "Pending"}</option>
+                                  <option value={true}>Approved</option>
+                                  <option value={false}>Pending</option>
+                                </select>
+                              </div>
+                              <div className="col">
+                                <button
+                                  onClick={() => leaveApprove(data?._id)}
+                                  to="/add-job"
+                                  className="btn btn-sm rounded badge-muted-primary"
+                                >
+                                  save
+                                </button>
+                                <button onClick={() => deleteLeave(data._id)} className="btn btn-sm rounded badge-muted-danger mx-2">
+                                  <i className="fa-solid fa-trash text-danger"></i>
+                                </button>
+                              </div>
+                            </div>
+                          )
+                        })
+                        :
+                        <>loadding...</> :
+                      searchResults.map((data, ind) => {
+                        return (
+                          <div className="border rounded shadow-sm row align-items-center my-2 mx-0 py-2 job-row" >
+                            <div className="col d-flex align-items-center">
+                              <div className="mx-2">
+                                <p className="m-0 text-xs">Username</p>
+                                <p className="m-0 text-s">{data?.user?.username}</p>
+                              </div>
+                            </div>
+                            <div className="col">
+                              <p className="m-0 text-xs">Leave Type</p>
+                              <p className="m-0 text-s">{data?.leaveType}</p>
+                            </div>
+                            <div className="col">
+                              <p className="m-0 text-xs">Duration</p>
+                              <p className="m-0 text-sm fw-bold">{data?.leaveDuration}</p>
+                            </div>
+                            <div className="col">
+                              <p className="m-0 text-xs">Reason</p>
+                              <p className="m-0 text-sm fw-bold">{data?.leaveReason}</p>
+                            </div>
+                            <div className="col">
+                              <p className="m-0 text-xs">Leave Date</p>
+                              <p className="m-0 text-sm">{new Date(data?.leaveDate)?.toDateString()}</p>
+                            </div>
+                            <div className="col">
+                              <p className="m-0 text-xs">Is Approved</p>
+                              {/* <p className={`m-0 badge ${data?.isApproved === true ? ' badge-muted-warning' : ' badge-muted-danger'} fw-light`}>
                             {data?.isApproved ? 'Approved' : 'Not Approved'}
                           </p> */}
-                          <select onChange={e => setApproved(e.target.value)} className="form-select" aria-label="Default select example">
-                            <option value={data?.isApproved} selected>{data?.isApproved ? "Approved" : "Pending"}</option>
-                            <option value={true}>Approved</option>
-                            <option value={false}>Pending</option>
-                          </select>
-                        </div>
-                        <div className="col">
-                          <button
-                            onClick={() => leaveApprove(data?._id)}
-                            to="/add-job"
-                            className="btn btn-sm rounded badge-muted-primary"
-                          >
-                            save
-                          </button>
-                          <button className="btn btn-sm rounded badge-muted-danger mx-2">
-                            <i className="fa-solid fa-trash text-danger"></i>
-                          </button>
-                        </div>
-                      </div>
-                    )
-                  })
+                              <select onChange={e => setApproved(e.target.value)} className="form-select" aria-label="Default select example">
+                                <option value={data?.isApproved} selected>{data?.isApproved ? "Approved" : "Pending"}</option>
+                                <option value={true}>Approved</option>
+                                <option value={false}>Pending</option>
+                              </select>
+                            </div>
+                            <div className="col">
+                              <button
+                                onClick={() => leaveApprove(data?._id)}
+                                to="/add-job"
+                                className="btn btn-sm rounded badge-muted-primary"
+                              >
+                                save
+                              </button>
+                              <button onClick={() => deleteLeave(data._id)} className="btn btn-sm rounded badge-muted-danger mx-2">
+                                <i className="fa-solid fa-trash text-danger"></i>
+                              </button>
+                            </div>
+                          </div>
+                        )
+                      })
                   }
                 </div>
               </div>

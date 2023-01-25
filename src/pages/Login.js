@@ -8,6 +8,7 @@ const Login = () => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [showPass, setShowPass] = useState(false)
 
     const navigate = useNavigate()
 
@@ -16,9 +17,16 @@ const Login = () => {
         console.log(res.data)
         if (res.data.success) {
             if (res.data.isVerify) {
-                console.log(res.data)
-                localStorage.setItem("token", res.data.token)
-                window.location = "/"
+                if (res.data.isHr) {
+                    localStorage.setItem("token", res.data.token)
+                    window.location = "/"
+                } else if (res.data.isManager) {
+                    localStorage.setItem("token", res.data.token)
+                    window.location = "/manager"
+                } else if (res.data.isEmployee) {
+                    localStorage.setItem("token", res.data.token)
+                    window.location = "/employee"
+                }
             } else {
                 toast.error('User not verify!!')
             }
@@ -47,9 +55,22 @@ const Login = () => {
                                                 <input onChange={(e) => setEmail(e.target.value)} className="form-control" id="inputEmailAddress" type="email" placeholder="Enter email address" />
                                             </div>
                                             {/* <!-- Form Group (password)--> */}
-                                            <div className="form-group">
+                                            <div className="form-group " style={{ position: 'relative' }}>
                                                 <label className="small mb-1" htmlFor="inputPassword">Password</label>
-                                                <input onChange={(e) => setPassword(e.target.value)} className="form-control" id="inputPassword" type="password" placeholder="Enter password" />
+                                                <input style={{ position: 'relative' }} onChange={(e) => setPassword(e.target.value)} className="form-control" id="inputPassword" type={showPass ? "text" : "password"} placeholder="Enter password" />
+                                                {
+                                                     !showPass ?
+                                                    <i style={{ position: 'absolute', top: '60%', right: "10px" }} onClick={() => {
+                                                        showPass ?
+                                                            setShowPass(false) :
+                                                            setShowPass(true)
+                                                    }} class="fa-solid fa-eye"></i> :
+                                                    <i style={{ position: 'absolute', top: '60%', right: "10px" }} onClick={() => {
+                                                        showPass ?
+                                                            setShowPass(false) :
+                                                            setShowPass(true)
+                                                    }} class="fa-solid fa-eye-slash"></i>
+                                                }
                                             </div>
                                             {/* <!-- Form Group (remember password checkbox)--> */}
                                             <div className="form-group">

@@ -37,7 +37,7 @@ const AddProject = () => {
           taskComplete: 0,
           totalTask: 0,
         });
-        toast.success("Vacancy Posted");
+        toast.success("Task Posted");
         // console.log(res);
       } else {
         var res = await axios.put("/api/update-project/" + data?._id, {
@@ -45,7 +45,7 @@ const AddProject = () => {
           endAt: date.toDateString(),
         });
         console.log(res);
-        toast.success("update");
+        toast.success("Task Update");
       }
     } catch (error) {
       console.log(error);

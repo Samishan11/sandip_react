@@ -55,6 +55,11 @@ const SideNavHR = (props) => {
                                     <span className=''><i className='fa-solid fa-briefcase fs-5 me-1'></i> <span className='text-s'>Leave</span></span>
                                 </div>
                             </Link>
+                            <Link id="payroll" to="/payroll" className='tab-btn px-0 mx-2 my-1 rounded' type='button'>
+                                <div className='px-3 py-3 text-secondary'>
+                                    <span className=''> <i class="fa-solid fa-dollar-sign fs-5 me-1"></i><span className='text-s'>Pay Roll</span></span>
+                                </div>
+                            </Link>
                             <Link id="manage-user" to="/manage-user" className='tab-btn px-0 mx-2 my-1 rounded' type='button'>
                                 <div className='px-3 py-3 text-secondary'>
                                     <span className=''><i className='fa-sharp fa-solid fa-user fs-5 me-1'></i> <span className='text-s'>Manage User</span></span>
@@ -108,7 +113,7 @@ const SideNavHR = (props) => {
                                             <span className=''><i className='fa-solid fa-briefcase fs-5 me-1'></i> <span className='text-s'>My Task</span></span>
                                         </div>
                                     </Link>
-                                    <Link id="tasks" to="/employee/applicants" className='tab-btn px-0 mx-2 my-1 rounded' type='button'>
+                                    <Link id="applicant" to="/employee/applicants" className='tab-btn px-0 mx-2 my-1 rounded' type='button'>
                                         <div className='px-3 py-3 text-secondary'>
                                             <span className=''><i className='fa-solid fa-briefcase fs-5 me-1'></i> <span className='text-s'>My Applied Job</span></span>
                                         </div>
@@ -159,7 +164,10 @@ const SideNavHR = (props) => {
                             </div>
                         </div>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <Link className="dropdown-item" onClick={() => localStorage.removeItem("token")} to="/login">Logout</Link>
+                            <button className="dropdown-item" onClick={() => {
+                                localStorage.removeItem("token")
+                                window.location = '/login'
+                            }}>Logout</button>
                         </div>
                     </div>
                 </div>

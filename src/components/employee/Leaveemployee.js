@@ -12,7 +12,8 @@ const Leaveemployee = () => {
     useEffect(() => {
         axios.get("/api/get-leaves").then(data => {
             setGetLeave(data.data.data)
-          
+            console.log(data.data.data)
+
         }).catch(e => {
             console.log(e)
         })
@@ -79,12 +80,11 @@ const Leaveemployee = () => {
                                         </Link>
                                     </div>
                                     {
-                                        getLeave?.length > 0 ?
+                                        getLeave?.length >= 0 ?
                                             getLeave?.map((data, ind) => {
                                                 return (
-                                                    <Link to={`/employee/project/${data._id}`}
-                                                        className="border rounded shadow-sm row align-items-center my-2 mx-0 py-2 job-row" >
-                                                        <div className="col d-flex align-items-center">
+                                                    <div className="border rounded shadow-sm row align-items-center my-2 mx-0 py-2 job-row" >
+                                                        <div className="col  d-flex align-items-center">
                                                             <div className="mx-2">
                                                                 <p className="m-0 text-xs">Username</p>
                                                                 <p className="m-0 text-s">{data?.user?.username}</p>
@@ -112,18 +112,7 @@ const Leaveemployee = () => {
                                                                 {data?.isApproved ? 'Approved' : 'Not Approved'}
                                                             </p>
                                                         </div>
-                                                        <div className="col">
-                                                            <button
-                                                                to="/add-job"
-                                                                className="btn btn-sm rounded badge-muted-primary"
-                                                            >
-                                                                <i className="fa-solid fa-edit text-primary"></i>
-                                                            </button>
-                                                            <button className="btn btn-sm rounded badge-muted-danger mx-2">
-                                                                <i className="fa-solid fa-trash text-danger"></i>
-                                                            </button>
-                                                        </div>
-                                                    </Link>
+                                                    </div>
                                                 )
                                             })
                                             :

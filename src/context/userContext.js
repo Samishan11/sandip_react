@@ -10,7 +10,6 @@ export const UserProvider = (props) => {
     useEffect(() => {
         axios.get(`/api/get-user/` + userAuthToken?.userId).then(data => {
             setUser(data.data.data)
-            console.log(data.data.data)
         })
     }, [])
 

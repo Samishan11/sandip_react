@@ -18,9 +18,9 @@ const Attendance = () => {
 
     const [load, setLoad] = useState(false)
     useEffect(() => {
-        axios.get('/api/get-attandance/' + userAuthToken?.userId).then(data => {
+        axios.get('/api/get-attandance').then(data => {
             setgetuserAttandance(data.data.data)
-            console.log(data.data.data)
+            setgetAttandance(data.data.data)
         });
     }, [load])
 
@@ -52,8 +52,8 @@ const Attendance = () => {
         } catch (error) {
 
         }
-    }
-
+    };
+    
     return (
         <>
             <div>
@@ -130,7 +130,7 @@ const Attendance = () => {
 
                                     {
 
-                                        getuserAttandance?.attandance?.map((data, ind) => {
+                                        getAttandance?.attandance?.map((data, ind) => {
                                             return (
                                                 <div
                                                     className="border rounded shadow-sm row align-items-center my-2 mx-0 py-2 job-row"
@@ -155,6 +155,8 @@ const Attendance = () => {
                                         })
 
                                     }
+
+                                    <button className='fa-solid fa-print text-lg text-primary mt-4 d-block ml-auto' onClick={()=>window.print()}></button>
 
                                 </div>
                             </div>
