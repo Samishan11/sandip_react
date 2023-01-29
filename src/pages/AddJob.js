@@ -50,7 +50,6 @@ const AddJob = () => {
           vacancyDescription: desc,
         });
         toast.success("Vacancy Posted")
-        // console.log(res);
       } else {
         var res = await axios.put('/api/update-vacancy/' + data?._id, {
           vacancyTitle: formdata.vacancyTitle,

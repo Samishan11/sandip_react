@@ -13,7 +13,7 @@ export const ProtectedRoutes = () => {
         user?.user?._id ?
             <Outlet></Outlet>
             :
-            <Navigate to='*'></Navigate>
+            <Navigate to='/login'></Navigate>
 
     )
 }
@@ -31,6 +31,6 @@ export const ProtectedAdmin = () => {
         user?.user?.isHR ?
             <Outlet></Outlet>
             :
-            <Navigate to='*'></Navigate>
+            <Navigate to='/login'></Navigate>
     )
 }
