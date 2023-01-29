@@ -37,6 +37,9 @@ const AddJob = () => {
     e.preventDefault();
     try {
       if (data === undefined) {
+        if(!formdata.vacancyTitle || !formdata.position || !formdata.dueDate || !formdata.jobSalary || !formdata.location || !formdata.vacancyDescription){
+          toast.warn("All fields are required!!")
+        }
         var res = await axios.post("/api/post-vacancy", {
           vacancyTitle: formdata.vacancyTitle,
           position: formdata.position,

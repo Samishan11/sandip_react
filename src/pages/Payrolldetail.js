@@ -22,18 +22,18 @@ const Payrolldetail = () => {
     user?.salary <= 5000
       ? (1 / 100) * user?.salary
       : user?.salary > 5000 && user?.salary <= 20000
-      ? (10 / 100) * user?.salary
-      : user?.salary > 20000 && user?.salary <= 60000
-      ? (20 / 100) * user?.salary
-      : user?.salary > 60000 && (30 / 100) * user?.salary;
+        ? (10 / 100) * user?.salary
+        : user?.salary > 20000 && user?.salary <= 60000
+          ? (20 / 100) * user?.salary
+          : user?.salary > 60000 && (30 / 100) * user?.salary;
   var pf =
     user?.salary <= 5000
       ? 1 / 100
       : user?.salary > 5000 && user?.salary <= 20000
-      ? 5 / 100
-      : user?.salary > 20000 && user?.salary <= 60000
-      ? 10 / 100
-      : user?.salary > 60000 && 15 / 100;
+        ? 5 / 100
+        : user?.salary > 20000 && user?.salary <= 60000
+          ? 10 / 100
+          : user?.salary > 60000 && 15 / 100;
 
   return (
     <div className="d-flex">
@@ -71,8 +71,8 @@ const Payrolldetail = () => {
                       {user?.isHR
                         ? "Human Resource"
                         : user?.isManager
-                        ? "Manager"
-                        : user?.isEmployee && "Employee"}
+                          ? "Manager"
+                          : user?.isEmployee && "Employee"}
                     </p>
                   </div>
                 </div>
@@ -84,8 +84,8 @@ const Payrolldetail = () => {
                       {user?.isHR
                         ? "HR"
                         : user?.isManager
-                        ? "Manager"
-                        : user?.isEmployee && "Employee"}
+                          ? "Manager"
+                          : user?.isEmployee && "Employee"}
                     </p>
                     <hr />
                   </div>
@@ -98,21 +98,21 @@ const Payrolldetail = () => {
                   </div>
                   <div>
                     <small className="text-s fw-lighter">Provident Fund</small>
-                    <p className="">{user?.salary ? `${pf * 100}%` : 0}</p>
+                    <p className="">{user?.salary ? `$10%` : 0}</p>
                     <hr />
                   </div>
                   <div>
                     <small className="text-s fw-lighter">Tax</small>
                     <p>
-                      {user?.salary <= 5000
-                        ? "1%"
-                        : user?.salary > 5000 && user?.salary <= 20000
-                        ? "10%"
-                        : user?.salary > 20000 && user?.salary <= 60000
-                        ? "20%"
-                        : user?.salary > 60000
-                        ? "30%"
-                        : "0"}
+                      {user?.salary <= 500000
+                        ? "5%"
+                        : user?.salary > 500000 && user?.salary <= 700000
+                          ? "10%"
+                          : user?.salary > 700000 && user?.salary <= 1000000
+                            ? "20%"
+                            : user?.salary > 1000000
+                              ? "30%"
+                              : "0"}
                     </p>
                     <hr />
                   </div>
@@ -122,15 +122,15 @@ const Payrolldetail = () => {
                       Rs.
                       {parseInt(
                         user?.salary -
-                          (
-                            taxableamount +
-                            user?.salary * pf )
+                        (
+                          taxableamount +((user?.salary * (10 / 100)))
+                        )
                       )}
                     </p>
                     <hr />
                   </div>
                 </div>
-                <button className='fa-solid fa-print text-lg text-primary mt-4 d-block ml-auto' onClick={()=>window.print()}></button>
+                <button className='fa-solid fa-print text-lg text-primary mt-4 d-block ml-auto' onClick={() => window.print()}></button>
               </div>
             </div>
           </div>

@@ -20,7 +20,7 @@ const Addleave = () => {
     user: data?.user ? data?.user : "",
   });
   const [date, setDate] = useState(
-    data?.dueDate ? new Date(data?.dueDate) : null
+    data?.dueDate ? new Date(data?.dueDate) : new Date()
   );
   const onInputChange = (e) => {
     setFormdata({ ...formdata, [e.target.name]: e.target.value });

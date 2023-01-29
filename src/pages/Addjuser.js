@@ -57,24 +57,26 @@ const Adduser = () => {
 
     try {
       if (!data) {
-        // if (formdata.password !== formdata.checkpassword) {
-        //   toast.warning("Password not match")
-        // } else {
+        if (!formdata.username || !formdata.firstName || !formdata.lastName || !formdata.email || !formdata.password) {
+          toast.warn("All fields are required!!");
+        }
+        else {
 
-        var res = await axios.post("/api/register", {
-          username: formdata.username,
-          firstName: formdata.firstName,
-          lastName: formdata.lastName,
-          email: formdata.email,
-          password: formdata.password,
-          isHR: isHR,
-          isManager: isManager,
-          isEmployee: isEmployee,
-          isVerify: isVerify,
-          profile_pic: img,
-        });
-        toast.success("User Created");
-        console.log(res);
+          var res = await axios.post("/api/register", {
+            username: formdata.username,
+            firstName: formdata.firstName,
+            lastName: formdata.lastName,
+            email: formdata.email,
+            password: formdata.password,
+            isHR: isHR,
+            isManager: isManager,
+            isEmployee: isEmployee,
+            isVerify: isVerify,
+            profile_pic: img,
+          });
+          toast.success("User Created");
+          console.log(res);
+        }
       } else {
         var res = await axios.put("/api/update-user/" + data?._id, fd);
         toast.success("User Update");
