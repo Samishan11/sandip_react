@@ -119,7 +119,7 @@ const Settings = () => {
                                                     </div>
                                                     <div>
                                                         <small className='text-s fw-lighter'>Salary</small>
-                                                        <p className='text-success'>{user?.salary?  `Rs.${user?.salary}` : 0}</p>
+                                                        <p className='text-success'>{user?.salary?  `Rs.${parseInt(user?.salary)}` : 0}</p>
                                                         <hr />
                                                     </div>
                                                     <div>

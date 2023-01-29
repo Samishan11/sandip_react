@@ -20,6 +20,7 @@ const Attendance = () => {
     useEffect(() => {
         axios.get('/api/get-attandance').then(data => {
             setgetuserAttandance(data.data.data)
+            console.log(data.data.data)
             setgetAttandance(data.data.data)
         });
     }, [load])
@@ -53,7 +54,7 @@ const Attendance = () => {
 
         }
     };
-    
+
     return (
         <>
             <div>
@@ -126,37 +127,67 @@ const Attendance = () => {
                                             </div>
                                         </div>
                                     </div>
+
                                     <h6 className='my-2'>EMPLOYEE ATTENDACE | {date?.toDateString()}</h6>
 
                                     {
-
-                                        getAttandance?.attandance?.map((data, ind) => {
+                                        getAttandance?.map((data, ind) => {
                                             return (
-                                                <div
-                                                    className="border rounded shadow-sm row align-items-center my-2 mx-0 py-2 job-row"
-                                                >
-                                                    <div className="col-10 d-flex align-items-center">
-                                                        <div className="no-img-avatar-sm bg-info text-light">
-                                                            {getuserAttandance?.user?.firstName?.slice(0, 1) + getuserAttandance?.user?.lastName.slice(0, 1)}
-                                                        </div>
-                                                        <div className="mx-2">
-                                                            <p className="m-0 text-s">{getuserAttandance?.user?.firstName + getuserAttandance?.user?.lastName}</p>
-                                                        </div>
-                                                        <div className="mx-5">
-                                                            <p className="m-0 text-s">{data.date}</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className='col'>
-                                                        <p className='text-s fw-bold m-0'>Presence</p>
-                                                        <input className='d-block' disabled checked={data?.isPresent ? true : false} type="checkbox" />  {/* disabled because only manager handles the attendance */}
-                                                    </div>
-                                                </div>
+                                                <table className='table'>
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">{ind+1}</th>
+                                                            <th scope="col">Username</th>
+                                                            <th scope="col">Date</th>
+                                                            <th scope="col">Present</th>
+                                                        </tr>
+                                                    </thead>
+                                                    {data.attandance.map(data1 => {
+                                                        return (
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th scope="row">1</th>
+                                                                    <td>{data?.user?.username}</td>
+                                                                    <td>{data1.date}</td>
+                                                                    <td>         <input className='d-block' disabled checked={data1?.isPresent ? true : false} type="checkbox" />  {/* disabled because only manager handles the attendance */}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        )
+                                                    })}
+                                                    <p>Total Attandance: {data.totalAttandance}</p>
+                                                </table>
+                                                // <div
+                                                //     className="border rounded shadow-sm row align-items-center my-2 mx-0 py-2 job-row"
+                                                // >
+                                                //     <div className="col-10 d-flex align-items-center">
+                                                //         <div className="no-img-avatar-sm bg-info text-light">
+                                                //             {data?.user?.firstName?.slice(0, 1) + data?.user?.lastName.slice(0, 1)}
+                                                //         </div>
+                                                //         <div className="mx-2">
+                                                //             <p className="m-0 text-s">{data?.user?.firstName + data?.user?.lastName}</p>
+                                                //         </div>
+                                                //         <table className='mx-4'>
+                                                //             <tr>Date</tr>
+                                                //             {
+                                                //                 data.attandance.map(data1 => {
+                                                //                     return (
+                                                //                         <tr>{data1.date}</tr>
+                                                //                     )
+                                                //                 })
+                                                //             }
+                                                //         </table>
+                                                //     </div>
+                                                //     <div className='col'>
+                                                //         <p className='text-s fw-bold m-0'>Presence</p>
+                                                //         <input className='d-block' disabled checked={data?.isPresent ? true : false} type="checkbox" />  {/* disabled because only manager handles the attendance */}
+                                                //     </div>
+                                                // </div>
                                             )
                                         })
 
                                     }
 
-                                    <button className='fa-solid fa-print text-lg text-primary mt-4 d-block ml-auto' onClick={()=>window.print()}></button>
+                                    <button className='fa-solid fa-print text-lg text-primary mt-4 d-block ml-auto' onClick={() => window.print()}></button>
 
                                 </div>
                             </div>

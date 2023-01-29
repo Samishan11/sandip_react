@@ -92,7 +92,7 @@ const Payrolldetail = () => {
                   <div>
                     <small className="text-s fw-lighter">Salary</small>
                     <p className="text-success">
-                      {user?.salary ? `Rs.${user?.salary}` : 0}
+                      {user?.salary ? `Rs.${parseInt(user?.salary)}` : 0}
                     </p>
                     <hr />
                   </div>
@@ -117,19 +117,14 @@ const Payrolldetail = () => {
                     <hr />
                   </div>
                   <div>
-                    <small className="fw-lighter">Vat</small>
-                    <p>13%</p>
-                    <hr />
-                  </div>
-                  <div>
                     <small className="fw-lighter">Final Amount</small>
                     <p>
                       Rs.
                       {parseInt(
                         user?.salary -
-                          (taxableamount +
-                            user?.salary * pf +
-                            user?.salary * (13 / 100))
+                          (
+                            taxableamount +
+                            user?.salary * pf )
                       )}
                     </p>
                     <hr />

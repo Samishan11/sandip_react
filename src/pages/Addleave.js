@@ -31,18 +31,22 @@ const Addleave = () => {
     e.preventDefault();
     try {
       if (data === undefined) {
-        var res = await axios.post("/api/post-leave", {
-          leaveType: formdata.leaveType,
-          user: user?._id,
-          leaveDuration: formdata.leaveDuration,
-          leaveReason: formdata.leaveReason,
-          leaveDate: new Date(date).toDateString(),
-        });
-       if(res.data.success){
-        toast.success(res.data.message);
-       }else{
-        toast.error(res.data.message);
-       }
+        if (!formdata.leaveType || !formdata.leaveDuration || !formdata.leaveReason || !date) {
+          toast.error("Fill all the fields");
+        }else{
+          var res = await axios.post("/api/post-leave", {
+            leaveType: formdata.leaveType,
+            user: user?._id,
+            leaveDuration: formdata.leaveDuration,
+            leaveReason: formdata.leaveReason,
+            leaveDate: new Date(date).toDateString(),
+          });
+          if (res.data.success) {
+            toast.success(res.data.message);
+          } else {
+            toast.error(res.data.message);
+          }
+        }
         // console.log(res);
       } else {
         var res = await axios.put("/api/update-project/" + data?._id, {
