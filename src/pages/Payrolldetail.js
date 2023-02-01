@@ -98,14 +98,14 @@ const Payrolldetail = () => {
                   </div>
                   <div>
                     <small className="text-s fw-lighter">Provident Fund</small>
-                    <p className="">{user?.salary ? `$10%` : 0}</p>
+                    <p className="">{user?.salary ? `10%` : 0}</p>
                     <hr />
                   </div>
                   <div>
                     <small className="text-s fw-lighter">Tax</small>
                     <p>
                       {user?.salary <= 500000
-                        ? "5%"
+                        ? "1%"
                         : user?.salary > 500000 && user?.salary <= 700000
                           ? "10%"
                           : user?.salary > 700000 && user?.salary <= 1000000
